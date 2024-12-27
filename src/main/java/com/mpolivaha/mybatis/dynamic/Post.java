@@ -1,4 +1,4 @@
-package com.mpolivaha.mybatis.model;
+package com.mpolivaha.mybatis.dynamic;
 
 import lombok.Data;
 

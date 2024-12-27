@@ -1,8 +1,9 @@
 package com.mpolivaha.mybatis;
 
 import com.mpolivaha.mybatis.MybatisTest.CurrentContext;
-import com.mpolivaha.mybatis.model.Post;
+import com.mpolivaha.mybatis.dynamic.Post;
 import com.mpolivaha.sdj.AbstractIntegrationTest;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import lombok.SneakyThrows;
@@ -80,6 +81,58 @@ public class MybatisTest extends AbstractIntegrationTest {
 
   @Autowired
   SqlSession sqlSession;
+
+  @Test
+  @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, statements = """
+      CREATE SCHEMA mybatis;
+
+      CREATE TABLE IF NOT EXISTS mybatis.post(
+        id BIGSERIAL PRIMARY KEY,
+        title TEXT,
+        content TEXT,
+        created_at TIMESTAMP
+      );
+
+      CREATE TABLE IF NOT EXISTS mybatis.post_comment(
+        id BIGSERIAL PRIMARY KEY,
+        comment TEXT,
+        created_at TIMESTAMP,
+        post_id BIGINT REFERENCES mybatis.post(id)
+      );
+
+      CREATE TABLE IF NOT EXISTS mybatis.comment_reply(
+        id BIGSERIAL PRIMARY KEY,
+        body TEXT,
+        created_at TIMESTAMP,
+        post_comment_id BIGINT REFERENCES mybatis.post_comment(id)
+      );
+      """)
+  @Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, statements = """
+      DROP SCHEMA mybatis CASCADE;
+      """)
+  void testHappyPath() {
+    var post = new com.mpolivaha.mybatis.Post();
+    post.setTitle("MyBatis Framework");
+    post.setContent("Content of the article");
+    post.setCreatedAt(Instant.now());
+    post.setId(1L);
+
+    PostComment postComment = new PostComment();
+    postComment.setPost(post);
+    postComment.setComment("Mybatis comment!");
+    postComment.setId(1L);
+    postComment.setCreatedAt(Instant.now());
+
+    CommentReply commentReply = new CommentReply();
+    commentReply.setPostComment(postComment);
+    commentReply.setBody("Comment Body o_0");
+    commentReply.setCreatedAt(Instant.now());
+    commentReply.setId(1L);
+
+    sqlSession.insert("com.jugnsk.mybatis.insertPost", post);
+    sqlSession.insert("com.jugnsk.mybatis.insertPostComment", postComment);
+    sqlSession.insert("com.jugnsk.mybatis.insertCommentReply", commentReply);
+  }
 
   @SneakyThrows
   @Test

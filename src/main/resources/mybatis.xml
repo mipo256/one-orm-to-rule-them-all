@@ -1,7 +1,7 @@
 <!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jugnsk.mybatis">
 
-  <resultMap id="postMapper" type="com.mpolivaha.mybatis.model.Post">
+  <resultMap id="postMapper" type="com.mpolivaha.mybatis.dynamic.Post">
     <id property="id" column="id"/>
     <result property="topic" column="topic"/>
     <result property="score" column="score"/>
@@ -30,4 +30,19 @@
     )
     SELECT * FROM ranks r WHERE r.row_number &lt;= #{top_n};
   </select>
+
+  <insert id="insertPost" parameterType="com.mpolivaha.mybatis.Post">
+    INSERT INTO mybatis.post(id, title, content, created_at)
+    VALUES(#{id}, #{title}, #{content}, #{createdAt})
+  </insert>
+
+  <insert id="insertPostComment" parameterType="com.mpolivaha.mybatis.PostComment">
+    INSERT INTO mybatis.post_comment(id, comment, post_id, created_at)
+    VALUES(#{id}, #{comment}, #{post.id}, #{createdAt})
+  </insert>
+
+  <insert id="insertCommentReply" parameterType="com.mpolivaha.mybatis.CommentReply">
+    INSERT INTO mybatis.comment_reply(id, body, post_comment_id, created_at)
+    VALUES(#{id}, #{body}, #{postComment.id}, #{createdAt})
+  </insert>
 </mapper>
