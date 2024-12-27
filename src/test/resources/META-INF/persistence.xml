@@ -1,0 +1,15 @@
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0" >
+  <persistence-unit name="test-unit">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <class>com.mpolivaha.hibernate.models.Post</class>
+    <class>com.mpolivaha.hibernate.models.PostComment</class>
+    <class>com.mpolivaha.hibernate.models.CommentReply</class>
+    <class>com.mpolivaha.hibernate.onetoone.User</class>
+    <class>com.mpolivaha.hibernate.onetoone.AddressInfo</class>
+    <properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+      <property name = "hibernate.show_sql" value = "true" />
+      <property name = "hibernate.format_sql" value = "true" />
+    </properties>
+  </persistence-unit>
+</persistence>

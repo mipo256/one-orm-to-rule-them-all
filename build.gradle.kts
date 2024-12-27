@@ -24,12 +24,16 @@ val lombokVersion = "1.18.36"
 val junitVersion = "5.11.3"
 
 dependencies {
+  // spring bom
+  implementation(platform("org.springframework.boot:spring-boot-starter-parent:3.4.0"))
+
   // spring
-  implementation("org.springframework.data:spring-data-jdbc:3.4.0")
-  testImplementation("org.springframework.boot:spring-boot-starter-test:3.4.0")
+  implementation("org.springframework.data:spring-data-jdbc")
+  implementation("org.springframework.data:spring-data-jpa")
+  testImplementation("org.springframework.boot:spring-boot-starter-test")
 
   // logging
-  testImplementation("ch.qos.logback:logback-classic:1.5.12")
+  testImplementation("ch.qos.logback:logback-classic")
 
   // lombok
   compileOnly("org.projectlombok:lombok:$lombokVersion")
@@ -39,14 +43,14 @@ dependencies {
 
   testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
   testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-  testImplementation("org.assertj:assertj-core:3.26.3")
-  testImplementation("org.testcontainers:postgresql:1.20.4")
+  testImplementation("org.assertj:assertj-core")
+  testImplementation("org.testcontainers:postgresql")
 
   // hibernate
-  implementation("org.hibernate:hibernate-core:6.6.3.Final")
+  implementation("org.hibernate:hibernate-core:6.6.4.Final")
 
   // driver
-  implementation("org.postgresql:postgresql:42.7.4")
+  implementation("org.postgresql:postgresql")
 }
 
 tasks.test {

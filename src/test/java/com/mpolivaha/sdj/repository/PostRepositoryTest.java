@@ -1,14 +1,11 @@
 package com.mpolivaha.sdj.repository;
 
-import ch.qos.logback.classic.Logger;
 import com.mpolivaha.sdj.models.CommentReply;
 import com.mpolivaha.sdj.models.Post;
 import com.mpolivaha.sdj.models.PostComment;
 import com.mpolivaha.sdj.repository.PostRepositoryTest.CurrentContext;
 import java.util.List;
 import javax.sql.DataSource;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
