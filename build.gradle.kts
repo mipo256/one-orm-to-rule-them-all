@@ -49,6 +49,10 @@ dependencies {
   // hibernate
   implementation("org.hibernate:hibernate-core:6.6.4.Final")
 
+  // mybatis
+  implementation("org.mybatis:mybatis:3.5.7")
+  implementation("org.mybatis:mybatis-spring:3.0.4")
+
   // driver
   implementation("org.postgresql:postgresql")
 }

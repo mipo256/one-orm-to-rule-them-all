@@ -1,9 +1,9 @@
-package com.mpolivaha.sdj.repository;
+package com.mpolivaha.sdj;
 
 import com.mpolivaha.sdj.models.CommentReply;
 import com.mpolivaha.sdj.models.Post;
 import com.mpolivaha.sdj.models.PostComment;
-import com.mpolivaha.sdj.repository.PostRepositoryTest.CurrentContext;
+import com.mpolivaha.sdj.SpringDataJdbcTest.CurrentContext;
 import java.util.List;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +36,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = CurrentContext.class)
-class PostRepositoryTest extends AbstractIntegrationTest {
+class SpringDataJdbcTest extends AbstractIntegrationTest {
 
   @Configuration
   @Import(AbstractJdbcConfiguration.class)

@@ -1,19 +1,33 @@
-<select id="findActiveBlogWithTitleLike" resultType="Blog">
-  WITH ranks AS (
-    SELECT
-      id,
-      topic,
-      score,
-      ROW_NUMBER() over(PARTITION BY topic ORDER BY score DESC) as row_number
-    FROM posts
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jugnsk.mybatis">
+
+  <resultMap id="postMapper" type="com.mpolivaha.mybatis.model.Post">
+    <id property="id" column="id"/>
+    <result property="topic" column="topic"/>
+    <result property="score" column="score"/>
+    <result property="rank" column="row_number"/>
+  </resultMap>
+
+  <select id="findTopPosts" resultMap="postMapper">
+    WITH ranks AS (
+      SELECT
+        id,
+        topic,
+        score,
+        ROW_NUMBER() over(PARTITION BY topic ORDER BY score DESC) as row_number
+      FROM mybatis.posts
     <where>
-      <if test="topics != null">
-        topic IN ('databases', 'compilers')
+      <if test="topics != null and !topics.isEmpty()">
+        topic IN
+        <foreach collection="topics" item="item" separator="," open="(" close=")">
+          #{item}
+        </foreach>
       </if>
-      <if test="created_at != null">
-        created_at > created_at - INTERVAL '30 days'
+      <if test="created_at_start != null">
+        created_at &gt;= #{created_at_start}
       </if>
     </where>
     )
-    SELECT * FROM ranks r WHERE r.row_number &lt;= 5;
-</select>
+    SELECT * FROM ranks r WHERE r.row_number &lt;= #{top_n};
+  </select>
+</mapper>

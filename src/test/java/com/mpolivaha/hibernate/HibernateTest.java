@@ -1,11 +1,11 @@
-package com.mpolivaha.hibernate.repository;
+package com.mpolivaha.hibernate;
 
 import com.mpolivaha.hibernate.models.CommentReply;
 import com.mpolivaha.hibernate.models.Post;
 import com.mpolivaha.hibernate.models.PostComment;
 import com.mpolivaha.hibernate.onetoone.User;
-import com.mpolivaha.hibernate.repository.HibernateTest.CurrentContext;
-import com.mpolivaha.sdj.repository.AbstractIntegrationTest;
+import com.mpolivaha.hibernate.HibernateTest.CurrentContext;
+import com.mpolivaha.sdj.AbstractIntegrationTest;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;

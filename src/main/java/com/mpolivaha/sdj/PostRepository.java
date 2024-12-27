@@ -1,4 +1,4 @@
-package com.mpolivaha.sdj.repository;
+package com.mpolivaha.sdj;
 
 import com.mpolivaha.sdj.models.Post;
 import org.springframework.data.repository.CrudRepository;
