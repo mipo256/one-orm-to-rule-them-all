@@ -1,6 +1,5 @@
-package com.mpolivaha.sdj;
+package com.mpolivaha.sdj.models;
 
-import com.mpolivaha.sdj.models.Post;
 import org.springframework.data.repository.CrudRepository;
 
 public interface PostRepository extends CrudRepository<Post, Long> {

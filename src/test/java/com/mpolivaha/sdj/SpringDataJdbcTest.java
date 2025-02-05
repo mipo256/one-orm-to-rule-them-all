@@ -4,6 +4,7 @@ import com.mpolivaha.sdj.models.CommentReply;
 import com.mpolivaha.sdj.models.Post;
 import com.mpolivaha.sdj.models.PostComment;
 import com.mpolivaha.sdj.SpringDataJdbcTest.CurrentContext;
+import com.mpolivaha.sdj.models.PostRepository;
 import java.util.List;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.BeforeEach;

@@ -10,6 +10,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -97,8 +100,14 @@ class HibernateTest extends AbstractIntegrationTest {
   @Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, statements = """
       DROP SCHEMA jpa CASCADE;
       """)
-  void test_persistenceHappyPath() {
+  void test_persistenceHappyPath() throws SQLException {
     Post post = buildPost();
+
+    Connection connection = null;
+
+    PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM foo_bar WHERE (fooNumber, barNumber) IN ((?, ?))");
+    preparedStatement.setLong(1, 1);
+    preparedStatement.setLong(1, 2);
 
     EntityTransaction transaction = entityManager.getTransaction();
     transaction.begin();

@@ -25,30 +25,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingException;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
-@Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, statements = """
-      CREATE SCHEMA mybatis;
-
-      CREATE TABLE IF NOT EXISTS mybatis.posts(
-        id BIGSERIAL,
-        topic TEXT,
-        score REAL,
-        created_at TIMESTAMP
-      );
-      
-      INSERT INTO mybatis.posts(id, topic, score, created_at) SELECT
-        generate_series(0, 100),
-        CASE floor(random() * 4)
-           WHEN 0 THEN 'databases'
-           WHEN 1 THEN 'operating-systems'
-           WHEN 2 THEN 'compilers'
-           WHEN 3 THEN 'computer-science'
-        END,
-        random() * 10,
-        NOW() - (((random() * 100)::text) || ' days')::INTERVAL;
-      """)
-@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, statements = """
-      DROP SCHEMA mybatis CASCADE;
-      """)
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = CurrentContext.class)
 public class MybatisTest extends AbstractIntegrationTest {
@@ -84,6 +60,7 @@ public class MybatisTest extends AbstractIntegrationTest {
 
   @Test
   @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, statements = """
+      DROP SCHEMA IF EXISTS mybatis CASCADE;
       CREATE SCHEMA mybatis;
 
       CREATE TABLE IF NOT EXISTS mybatis.post(
@@ -107,9 +84,6 @@ public class MybatisTest extends AbstractIntegrationTest {
         post_comment_id BIGINT REFERENCES mybatis.post_comment(id)
       );
       """)
-  @Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, statements = """
-      DROP SCHEMA mybatis CASCADE;
-      """)
   void testHappyPath() {
     var post = new com.mpolivaha.mybatis.Post();
     post.setTitle("MyBatis Framework");
@@ -129,33 +103,41 @@ public class MybatisTest extends AbstractIntegrationTest {
     commentReply.setCreatedAt(Instant.now());
     commentReply.setId(1L);
 
-    sqlSession.insert("com.jugnsk.mybatis.insertPost", post);
-    sqlSession.insert("com.jugnsk.mybatis.insertPostComment", postComment);
-    sqlSession.insert("com.jugnsk.mybatis.insertCommentReply", commentReply);
+    sqlSession.insert("com.snowone.mybatis.insertPost", post);
+    sqlSession.insert("com.snowone.mybatis.insertPostComment", postComment);
+    sqlSession.insert("com.snowone.mybatis.insertCommentReply", commentReply);
   }
 
   @SneakyThrows
   @Test
+  @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, statements = """
+      DROP SCHEMA IF EXISTS mybatis CASCADE;
+      CREATE SCHEMA mybatis;
+
+      CREATE TABLE IF NOT EXISTS mybatis.posts(
+        id BIGSERIAL,
+        topic TEXT,
+        score REAL,
+        created_at TIMESTAMP
+      );
+      
+      INSERT INTO mybatis.posts(id, topic, score, created_at) SELECT
+        generate_series(0, 100),
+        CASE floor(random() * 4)
+           WHEN 0 THEN 'databases'
+           WHEN 1 THEN 'operating-systems'
+           WHEN 2 THEN 'compilers'
+           WHEN 3 THEN 'computer-science'
+        END,
+        random() * 10,
+        NOW() - (((random() * 100)::text) || ' days')::INTERVAL;
+      """)
   void testLoadingDynamicComplexQuery_compilersTop5() {
     List<Post> posts = sqlSession.selectList(
-        "com.jugnsk.mybatis.findTopPosts",
+        "com.snowone.mybatis.findTopPosts",
         Map.of(
             "top_n", 5,
             "topics", List.of("compilers")
-        )
-    );
-
-    print(posts);
-  }
-
-  @SneakyThrows
-  @Test
-  void testLoadingDynamicComplexQuery_databasesTop3() {
-    List<Post> posts = sqlSession.selectList(
-        "com.jugnsk.mybatis.findTopPosts",
-        Map.of(
-            "top_n", 3,
-            "topics", List.of("databases")
         )
     );
 
