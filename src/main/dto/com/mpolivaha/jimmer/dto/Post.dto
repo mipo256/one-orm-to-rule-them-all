@@ -1,0 +1,15 @@
+export com.mpolivaha.jimmer.models.Post
+    -> package com.mpolivaha.jimmer.dto
+
+input PostInput {
+    #allScalars(this)
+    -id
+    comments {
+      #allScalars(this)
+      -id
+      commentReplies {
+        #allScalars(this)
+        -id
+      }
+    }
+}

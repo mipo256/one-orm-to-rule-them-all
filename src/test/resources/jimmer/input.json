@@ -1,0 +1,17 @@
+{
+  "title" : "Jimmer happy case",
+  "content" : "Good luck searching bugs caused by this!",
+  "createdAt" : "2011-12-03T10:15:30+01:00",
+  "comments" : [
+    {
+      "comment" : "First comment",
+      "createdAt" : "2011-12-03T10:25:30+01:00",
+      "commentReplies" : [
+        {
+          "body" : "First Reply!",
+          "createdAt" : "2011-12-03T11:04:30+01:00"
+        }
+      ]
+    }
+  ]
+}

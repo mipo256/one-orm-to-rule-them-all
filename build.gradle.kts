@@ -9,6 +9,7 @@ java {
   }
 }
 
+
 sourceSets {
   main {
     java {
@@ -22,6 +23,7 @@ sourceSets {
 
 val lombokVersion = "1.18.36"
 val junitVersion = "5.11.3"
+val jimmerVersion = "0.9.37"
 
 dependencies {
   // spring bom
@@ -41,6 +43,12 @@ dependencies {
   testCompileOnly("org.projectlombok:lombok:$lombokVersion")
   testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
 
+  // jimmer
+  implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:${jimmerVersion}")
+  annotationProcessor("org.babyfish.jimmer:jimmer-apt:${jimmerVersion}")
+  compileOnly("org.babyfish.jimmer:jimmer-sql:${jimmerVersion}")
+  implementation("org.babyfish.jimmer:jimmer-core:${jimmerVersion}")
+
   testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
   testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
   testImplementation("org.assertj:assertj-core")
@@ -55,6 +63,9 @@ dependencies {
 
   // driver
   implementation("org.postgresql:postgresql")
+
+  // other
+  implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 }
 
 tasks.test {
