@@ -10,11 +10,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.List;
-import lombok.EqualsAndHashCode;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -24,7 +25,6 @@ import org.hibernate.annotations.CascadeType;
 @Entity
 @Table(schema = "jpa")
 @Accessors(chain = true)
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Post {
 
   @Id
@@ -38,7 +38,25 @@ public class Post {
   @Column(name = "created_at")
   private Instant createdAt;
 
+  @ToString.Exclude
   @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
   @Cascade({CascadeType.PERSIST, CascadeType.MERGE})
   private List<PostComment> comments;
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+      return false;
+    }
+    Post post = (Post) o;
+    return getId() != null && Objects.equals(getId(), post.getId());
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
+  }
 }

@@ -103,12 +103,6 @@ class HibernateTest extends AbstractIntegrationTest {
   void test_persistenceHappyPath() throws SQLException {
     Post post = buildPost();
 
-    Connection connection = null;
-
-    PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM foo_bar WHERE (fooNumber, barNumber) IN ((?, ?))");
-    preparedStatement.setLong(1, 1);
-    preparedStatement.setLong(1, 2);
-
     EntityTransaction transaction = entityManager.getTransaction();
     transaction.begin();
     entityManager.persist(post);

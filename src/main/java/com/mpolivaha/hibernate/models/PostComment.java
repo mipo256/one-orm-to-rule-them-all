@@ -12,11 +12,13 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -26,7 +28,6 @@ import org.hibernate.annotations.CascadeType;
 @Entity
 @Table(schema = "jpa", name = "post_comment")
 @Accessors(chain = true)
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class PostComment {
 
   @Id
@@ -39,11 +40,30 @@ public class PostComment {
   @Column(name = "created_at")
   private Instant createdAt;
 
+  @ToString.Exclude
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "post_id")
   private Post post;
 
+  @ToString.Exclude
   @OneToMany(mappedBy = "postComment", fetch = FetchType.LAZY)
   @Cascade({CascadeType.PERSIST, CascadeType.MERGE})
   private List<CommentReply> commentReplies;
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+      return false;
+    }
+    PostComment that = (PostComment) o;
+    return getId() != null && Objects.equals(getId(), that.getId());
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
+  }
 }
