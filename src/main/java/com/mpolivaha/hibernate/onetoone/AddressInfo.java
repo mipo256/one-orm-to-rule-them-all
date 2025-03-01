@@ -27,6 +27,7 @@ public class AddressInfo {
 
   private String city;
 
+  @ToString.Exclude
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "owner_id")
   private User owner;

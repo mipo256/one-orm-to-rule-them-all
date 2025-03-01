@@ -1,9 +1,6 @@
 package com.mpolivaha.jimmer.models;
 
 import java.time.Instant;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 import org.babyfish.jimmer.sql.Column;
 import org.babyfish.jimmer.sql.Entity;
 import org.babyfish.jimmer.sql.GeneratedValue;

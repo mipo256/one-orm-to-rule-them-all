@@ -30,4 +30,8 @@ public class User {
   @ToString.Exclude
   @OneToOne(mappedBy = "owner", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
   private AddressInfo addressInfo;
+
+  public AddressInfo getAddressInfo() {
+    return addressInfo;
+  }
 }
