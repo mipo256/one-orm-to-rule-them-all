@@ -141,7 +141,7 @@ public class JimmerTest extends AbstractIntegrationTest {
         .produce(pDraft -> {
           pDraft.setTitle("Jimmer happy case");
           pDraft.setContent("Good luck searching bugs caused by this!");
-          pDraft.setCreatedAt(Instant.now());
+          pDraft.setCreatedAt(null);
           pDraft.setComments(List.of(
               PostCommentDraft.$.produce(commentDraft -> {
                 commentDraft.setComment("First comment");

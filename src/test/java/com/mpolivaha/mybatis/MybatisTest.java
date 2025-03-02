@@ -132,6 +132,7 @@ public class MybatisTest extends AbstractIntegrationTest {
         random() * 10,
         NOW() - (((random() * 100)::text) || ' days')::INTERVAL;
       """)
+  // deep reflection needs to be allowed
   void testLoadingDynamicComplexQuery_compilersTop5() {
     List<Post> posts = sqlSession.selectList(
         "com.snowone.mybatis.findTopPosts",
